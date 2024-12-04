@@ -1,0 +1,82 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             xmlns:syncfusion="clr-namespace:Syncfusion.Maui.DataGrid;assembly=Syncfusion.Maui.DataGrid"
+             xmlns:local="clr-namespace:SfDataGridSample"
+             x:Class="SfDataGridSample.MainPage">
+
+    <ContentPage.BindingContext>
+        <local:EmployeeViewModel x:Name="viewModel" />
+    </ContentPage.BindingContext>
+
+    <ContentPage.Resources>
+        <ResourceDictionary>
+            <local:GroupCaptionConverter x:Key="SummaryConverter" />
+        </ResourceDictionary>
+    </ContentPage.Resources>
+
+    <syncfusion:SfDataGrid x:Name="dataGrid"
+                           Margin="10"
+                           GridLinesVisibility="Both"
+                           HeaderGridLinesVisibility="Both"
+                           ColumnWidthMode="Auto"
+                           AllowGroupExpandCollapse="True"
+                           GroupingMode="Single"
+                           AutoGenerateColumnsMode="None"
+                           ItemsSource="{Binding Employees}">
+
+        <syncfusion:SfDataGrid.GroupColumnDescriptions>
+            <syncfusion:GroupColumnDescription ColumnName="Salary" />
+        </syncfusion:SfDataGrid.GroupColumnDescriptions>
+
+        <syncfusion:SfDataGrid.CaptionSummaryTemplate>
+            <DataTemplate>
+                <StackLayout Orientation="Horizontal">
+                    <Label Text="{Binding Converter={StaticResource SummaryConverter}, ConverterParameter = {x:Reference dataGrid} }"
+                           FontSize="Default"
+                           VerticalTextAlignment="Center"
+                           HorizontalTextAlignment="Start"
+                           LineBreakMode="NoWrap"
+                           HorizontalOptions="FillAndExpand"
+                           VerticalOptions="FillAndExpand">
+                        <Label.Style>
+                            <Style TargetType="Label">
+                                <Setter Property="FontAttributes"
+                                        Value="Bold, Italic" />
+                                <Setter Property="TextColor"
+                                        Value="Orange" />
+                            </Style>
+                        </Label.Style>
+                    </Label>
+                </StackLayout>
+            </DataTemplate>
+        </syncfusion:SfDataGrid.CaptionSummaryTemplate>
+        <syncfusion:SfDataGrid.CaptionSummaryRow>
+            <syncfusion:DataGridSummaryRow Name="CaptionSummary"
+                                           ShowSummaryInRow="True"
+                                           Title="Total Salary: {CaptionSummary}">
+                <syncfusion:DataGridSummaryRow.SummaryColumns>
+                    <syncfusion:DataGridSummaryColumn Name="CaptionSummary"
+                                                      Format="{}{Sum:C0}"
+                                                      MappingName="Salary"
+                                                      SummaryType="DoubleAggregate" />
+                </syncfusion:DataGridSummaryRow.SummaryColumns>
+            </syncfusion:DataGridSummaryRow>
+        </syncfusion:SfDataGrid.CaptionSummaryRow>
+
+        <syncfusion:SfDataGrid.Columns>
+            <syncfusion:DataGridNumericColumn MappingName="EmployeeID"
+                                              Format="#"
+                                              HeaderText="Employee ID" />
+            <syncfusion:DataGridTextColumn MappingName="Name"
+                                           HeaderText="Employee Name" />
+            <syncfusion:DataGridTextColumn MappingName="Title"
+                                           HeaderText="Designation" />
+            <syncfusion:DataGridNumericColumn MappingName="Salary"
+                                              HeaderText="Salary" />
+
+        </syncfusion:SfDataGrid.Columns>
+
+    </syncfusion:SfDataGrid>
+
+</ContentPage>
